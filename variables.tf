@@ -12,8 +12,3 @@ variable "instance_type" {
   description = "The instance type to use"
   default     = "t2.micro"
 }
-
-variable "private_key_path" {
-  description = "Path to the private key for SSH access"
-  default     = "${path.module}/keys/my-key.pem"
-}
