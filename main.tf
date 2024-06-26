@@ -21,7 +21,7 @@ resource "aws_instance" "mongodb" {
     connection {
       type        = "ssh"
       user        = "ec2-user"
-      private_key = file("${path.module}/keys/my-key.pem")
+      private_key = var.private_key_path
       host        = self.public_ip
     }
   }
