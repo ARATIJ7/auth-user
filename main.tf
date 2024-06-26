@@ -52,9 +52,9 @@ resource "aws_security_group" "mongo_sg" {
 }
 
 resource "aws_instance" "mongo" {
-  ami           = "ami-0c55b159cbfafe1f0"  # Replace with a suitable Amazon Linux 2 AMI
+  ami           = "ami-0edf386e462400a51"  # Replace with a suitable Amazon Linux 2 AMI
   instance_type = "t2.micro"
-  key_name      = "your-key-pair"  # Replace with your key pair
+  key_name      = "project"  # Replace with your key pair
 
   vpc_security_group_ids = [aws_security_group.mongo_sg.id]
 
@@ -69,7 +69,6 @@ resource "aws_instance" "mongo" {
       [mongodb-org-4.4]
       name=MongoDB Repository
       baseurl=https://repo.mongodb.org/yum/amazon/2/mongodb-org/4.4/x86_64/
-      gpgcheck=1
       enabled=1
       gpgkey=https://www.mongodb.org/static/pgp/server-4.4.asc
       EOF",
