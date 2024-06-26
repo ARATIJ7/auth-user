@@ -12,13 +12,16 @@ resource "aws_instance" "mongo" {
   provisioner "remote-exec" {
     inline = [
       "sudo yum update -y",
-      "sudo tee /etc/yum.repos.d/mongodb-org-4.4.repo <<EOM
+      <<-EOT
+sudo tee /etc/yum.repos.d/mongodb-org-4.4.repo <<EOF
 [mongodb-org-4.4]
 name=MongoDB Repository
 baseurl=https://repo.mongodb.org/yum/amazon/2/mongodb-org/4.4/x86_64/
 enabled=1
 gpgkey=https://www.mongodb.org/static/pgp/server-4.4.asc
-EOM",
+EOF
+EOT
+      ,
       "sudo yum install -y mongodb-org",
       "sudo systemctl start mongod",
       "sudo systemctl enable mongod",
