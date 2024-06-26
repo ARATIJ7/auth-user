@@ -33,7 +33,7 @@ EOT
     connection {
       type        = "ssh"
       user        = "ec2-user"
-      private_key = file("C:\\Users\\jagta\\Downloads\\project.pem")  # Replace with your private key path
+      private_key = file("C:/Users/jagta/Downloads/project.pem")  # Replace with your private key path
       host        = self.public_ip
     }
   }
