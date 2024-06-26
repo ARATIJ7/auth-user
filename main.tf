@@ -6,23 +6,13 @@ resource "aws_instance" "mongodb" {
   ami           = var.ami_id
   instance_type = var.instance_type
 
+  user_data = file("${path.module}/user_data.sh")
+
   tags = {
     Name = "MongoDBServer"
   }
+}
 
-  provisioner "remote-exec" {
-    inline = [
-      "sudo yum update -y",
-      "sudo yum install -y mongodb-org",
-      "sudo systemctl start mongod",
-      "sudo systemctl enable mongod"
-    ]
-
-    connection {
-      type        = "ssh"
-      user        = "ec2-user"
-      private_key = var.private_key_path
-      host        = self.public_ip
-    }
-  }
+output "instance_ip" {
+  value = aws_instance.mongodb.public_ip
 }
