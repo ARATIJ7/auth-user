@@ -11,7 +11,7 @@ resource "null_resource" "mongo_user_setup" {
     connection {
       type        = "ssh"
       user        = "ec2-user"
-      private_key = file(var.private_key_path)
+      private_key = file("${path.module}/keys/my-key.pem")
       host        = aws_instance.mongodb.public_ip
     }
   }
