@@ -10,8 +10,12 @@ resource "aws_instance" "mongo" {
   }
 
   provisioner "remote-exec" {
-    # Other configuration
-    timeout = "10m"  # Adjust timeout as necessary
+    connection {
+      type        = "ssh"
+      user        = "ec2-user"
+      host        = self.public_ip
+    }
+
     inline = [
       "sudo yum update -y",
       <<-EOT
@@ -25,18 +29,28 @@ resource "aws_instance" "mongo" {
       EOT
       ,
       "sudo yum install -y mongodb-org",
-      "sudo systemctl start mongod",
-      "sudo systemctl enable mongod",
-      "mongo --eval 'db.createUser({user:\"admin\", pwd:\"password\", roles:[{role:\"root\", db:\"admin\"}]})'",
+      {
+        command = "sudo systemctl start mongod"
+        execute_timeout = "5m"  # Timeout for starting MongoDB service
+      },
+      {
+        command = "sudo systemctl enable mongod"
+        execute_timeout = "1m"  # Timeout for enabling MongoDB service
+      },
+      {
+        command = "mongo --eval 'db.createUser({user:\"admin\", pwd:\"password\", roles:[{role:\"root\", db:\"admin\"}]})'"
+        execute_timeout = "2m"  # Timeout for creating MongoDB user
+      },
       "sudo sed -i 's/#security:/security:\\n  authorization: enabled/' /etc/mongod.conf",
-      "sudo systemctl restart mongod"
+      {
+        command = "sudo systemctl restart mongod"
+        execute_timeout = "5m"  # Timeout for restarting MongoDB service
+      }
     ]
 
-    connection {
-      type        = "ssh"
-      user        = "ec2-user"
-      # No need for private_key when using key_name
-      host        = self.public_ip
-    }
+    timeout = "15m"  # Overall timeout for all commands
+
+    # Optional: Write a timeout for the entire connection operation
+    connection_timeout = "2m"
   }
 }
