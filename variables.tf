@@ -15,5 +15,5 @@ variable "instance_type" {
 
 variable "private_key_path" {
   description = "Path to the private key for SSH access"
-  default     = "~/.ssh/my-key.pem"
+  default     = "~/.ssh/project.pem"
 }
