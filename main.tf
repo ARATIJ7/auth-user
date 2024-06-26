@@ -10,6 +10,9 @@ resource "aws_instance" "mongo" {
   }
 
   provisioner "remote-exec" {
+    # Other configuration
+  timeout = "10m"  # Adjust timeout as necessary
+}
     inline = [
       "sudo yum update -y",
       <<-EOT
