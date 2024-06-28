@@ -61,9 +61,6 @@ resource "aws_instance" "mongodb_instance" {
   EOF
 }
 
-output "instance_ip" {
-  value = aws_instance.mongodb_instance.public_ip
-}
 
   
    
