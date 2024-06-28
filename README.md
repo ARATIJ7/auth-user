@@ -1,3 +1,5 @@
+Step :creation of admin database with admin user and password in mongodb with terraform.
+
 Step : Initialize and Apply Terraform Configuration
 Initialize Terraform
 
