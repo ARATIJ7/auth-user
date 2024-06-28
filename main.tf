@@ -58,19 +58,11 @@ resource "aws_instance" "mongodb_instance" {
     sudo systemctl enable mongod
 
     # Wait for MongoDB to start
-    sleep 10
+    }
 
-    # Create an admin user in MongoDB
-    mongo admin --eval 'db.createUser({user:"admin",pwd:"password123",roles:[{role:"userAdminAnyDatabase",db:"admin"}]})'
-
-    # Enable authentication in MongoDB configuration
-    sudo sed -i '/#security:/a\\security:\n  authorization: "enabled"' /etc/mongod.conf
-
-    # Restart MongoDB service to apply changes
-    sudo systemctl restart mongod
-  EOF
-
-  tags = {
-    Name = "MongoDBInstance"
-  }
+output "instance_ip" {
+  value = aws_instance.mongodb_instance.public_ip
 }
+
+  
+   
