@@ -58,7 +58,8 @@ resource "aws_instance" "mongodb_instance" {
     sudo systemctl enable mongod
 
     # Wait for MongoDB to start
-    }
+  EOF
+}
 
 output "instance_ip" {
   value = aws_instance.mongodb_instance.public_ip
