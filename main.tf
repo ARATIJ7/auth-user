@@ -6,20 +6,20 @@ resource "aws_instance" "mongodb" {
   ami           = "ami-024ebc7de0fc64e44"  # Amazon Linux 2 AMI
   instance_type = "t2.micro"  # Use a free-tier instance type or your desired instance type
 
-  user_data = <<-EOF
+  user_data = <<-EOM
               #!/bin/bash
               # Update the package list
               sudo yum update -y
 
               # Install MongoDB
-              sudo tee /etc/yum.repos.d/mongodb-org-4.4.repo <<EOL
+              sudo tee /etc/yum.repos.d/mongodb-org-4.4.repo <<EOF
               [mongodb-org-4.4]
               name=MongoDB Repository
               baseurl=https://repo.mongodb.org/yum/amazon/2/mongodb-org/4.4/x86_64/
               gpgcheck=1
               enabled=1
               gpgkey=https://www.mongodb.org/static/pgp/server-4.4.asc
-              EOL
+              EOF
 
               sudo yum install -y mongodb-org
 
@@ -31,15 +31,15 @@ resource "aws_instance" "mongodb" {
               sleep 10
 
               # Create MongoDB admin user
-              mongo <<EOF
+              mongo <<EOD
               use admin
               db.createUser({
                 user: "admin",
                 pwd: "arati",
                 roles: [{ role: "userAdminAnyDatabase", db: "admin" }]
               })
-              EOF
-              EOF
+              EOD
+              EOM
 
   tags = {
     Name = "MongoDBInstance"
